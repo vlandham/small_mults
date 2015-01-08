@@ -1,0 +1,20 @@
+h1. Linked Small Multiples
+
+A demonstration of using D3 to create interactive linked small multiples. 
+
+h2. Usage
+
+You can start up a local webserver by using python's simple server:
+
+<pre>
+python -m SimpleHTTPServer 3000
+</pre>
+
+or node's http-server
+
+<pre>
+http-server -p 3000
+</pre>
+
+Now go to "http://0.0.0.0:3000":http://0.0.0.0:3000/
+
