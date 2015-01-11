@@ -1,6 +1,6 @@
-"use strict";
 
 var smallMultiples = function() {
+  "use strict";
   // scoped variables
   var data = null;
 
@@ -23,9 +23,6 @@ var smallMultiples = function() {
   var xScale = d3.time.scale().range([0, width]);
   var yScale = d3.scale.linear().range([height, 0]);
 
-  var xValue = function(d) { return d.date;};
-  var yValue = function(d) { return d.n;};
-
   var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left")
@@ -45,7 +42,7 @@ var smallMultiples = function() {
   var setupScales = function(data) {
     var maxY = d3.max(data, function(c) {
       return d3.max(c.values, function(d) {
-        return yValue(d);
+        return d.n;
       });
     });
 
@@ -57,8 +54,9 @@ var smallMultiples = function() {
     // only look at the first data element's values to
     // get the time range
     var extentX = d3.extent(data[0].values, function(d) {
-      return xValue(d);
+      return d.date;
     });
+
     xScale.domain(extentX);
     return true;
   };
@@ -129,7 +127,7 @@ var smallMultiples = function() {
         .attr("y", height)
         .attr("x", 0)
         .text(function(c) {
-          return xValue(c.values[0]).getFullYear();
+          return c.values[0].date.getFullYear();
         });
 
       lines.append("text")
@@ -139,7 +137,7 @@ var smallMultiples = function() {
         .attr("dy", 13)
         .attr("y", height)
         .attr("x", width).text(function(c) {
-          return xValue(c.values[c.values.length - 1]).getFullYear();
+          return c.values[c.values.length - 1].date.getFullYear();
         });
 
         // hide for now
@@ -164,7 +162,7 @@ var smallMultiples = function() {
       return g.append("g").attr("class", "y axis").call(yAxis);
 
     });
-  }
+  };
 
   var mouseover = function() {
     circle.attr("opacity", 1.0);
