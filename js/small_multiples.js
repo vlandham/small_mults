@@ -1,4 +1,16 @@
 
+function addCommas(number) {
+  number += '';
+  var values = number.split(".");
+  var num = values[0];
+  var dec = values.length > 1 ? "." + values[1] : "";
+  var regex = /(\d+)(\d{3})/;
+  while (regex.test(num)) {
+    num = num.replace(regex, '$1' + ',' + '$2');
+  }
+  return num + dec;
+}
+
 var smallMultiples = function() {
   "use strict";
   // scoped variables
@@ -204,7 +216,7 @@ var smallMultiples = function() {
       .attr("y", function(c) {
         return yScale(c.values[index].n);
       }).text(function(c) {
-        return c.values[index].n;
+        return addCommas(c.values[index].n);
       });
 
     curYear
