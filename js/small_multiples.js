@@ -13,14 +13,14 @@ function addCommas(number) {
 
 var smallMultiples = function() {
   "use strict";
-  // scoped variables
-  var data = null;
 
+  var data = null;
   var circle = null;
   var curYear = null;
   var caption = null;
 
-  var width = 150, height = 150;
+  var width = 150;
+  var height = 150;
 
   var margin = {
     top: 15,
@@ -51,6 +51,8 @@ var smallMultiples = function() {
     .x(function(d) { return xScale(d.date); })
     .y(function(d) { return yScale(d.n); });
 
+  // helper function to get data extents
+  // and setup domain and range of scales
   var setupScales = function(data) {
     var maxY = d3.max(data, function(c) {
       return d3.max(c.values, function(d) {
@@ -61,7 +63,8 @@ var smallMultiples = function() {
     // nudge maxY up a bit
     maxY = maxY + (maxY * 1 / 4);
 
-    yScale.domain([0, maxY]);
+    yScale.domain([0, maxY])
+      .range([height, 0]);
 
     // only look at the first data element's values to
     // get the time range
@@ -69,7 +72,8 @@ var smallMultiples = function() {
       return d.date;
     });
 
-    xScale.domain(extentX);
+    xScale.domain(extentX)
+      .range([0, width]);
     return true;
   };
 
@@ -78,6 +82,8 @@ var smallMultiples = function() {
     return selection.each(function(rawData) {
       var data = rawData;
       setupScales(data);
+      area.y0(height);
+      yAxis.tickSize(-width);
 
       var lines;
 
@@ -232,6 +238,22 @@ var smallMultiples = function() {
     caption.text("");
     curYear.text("");
     return true;
+  };
+
+  chart.width = function(value) {
+    if (!arguments.length) {
+      return width;
+    }
+    width = value;
+    return chart;
+  };
+
+  chart.height = function(value) {
+    if (!arguments.length) {
+      return height;
+    }
+    height = value;
+    return chart;
   };
 
   return chart;
